@@ -79,7 +79,13 @@ else if (cmd == "-p") {
 
 }
 else {
-    console.log("usage");
+    console.log("usage:");
+    console.log("node main.js [-g <http(s)://api-backend/api/path/> | -p <hostname> <api-backend> | -r <hostname>]");
+    console.log("");
+    console.log("-g get Data from url");
+    console.log("-p send Data to Tasklist- API (INTERACTIVE)");
+    console.log("-r resolve hostname");
+    console.log("");
 }
 
 
