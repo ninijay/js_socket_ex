@@ -1,13 +1,28 @@
 const net = require('net');
 const dns = require('dns');
-var hostname = process.argv[2];
+const https = require("https");
 
- // Console will print the message
- console.log('Server running at http://127.0.0.1:8081/');
+var cmd = process.argv[2];
+var hostname = process.argv[3];
+
+if(cmd=="-r")
+{
+     // Console will print the message
  console.log("resolving "+hostname);
+ dns.lookup(hostname, function(err, result) {
+   console.log(result)
+ })
+}
+else if(cmd=="-g")
+{
+    https.get(hostname, res => {
+        res.setEncoding("utf8");
+        let body = "";
+        res.on("data", data => {
+          console.log(data);
+          body += data;
+        });
+      });
+}
 
- 
 
-dns.lookup(hostname, function(err, result) {
-  console.log(result)
-})
