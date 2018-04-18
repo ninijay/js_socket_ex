@@ -1,0 +1,28 @@
+{
+  "name": "js_socket_ex",
+  "version": "1.0.0",
+  "description": "Testing socks",
+  "main": "index.js",
+  "scripts": {
+    "test": "tst"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ninijay/js_socket_ex.git"
+  },
+  "keywords": [
+    "sockets",
+    "test"
+  ],
+  "author": "zanidd",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/ninijay/js_socket_ex/issues"
+  },
+  "homepage": "https://github.com/ninijay/js_socket_ex#readme",
+  "dependencies": {
+    "commander": "^2.15.1",
+    "content-disposition": "^0.5.2",
+    "express": "^4.16.3"
+  }
+}
