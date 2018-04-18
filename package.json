@@ -23,6 +23,8 @@
   "dependencies": {
     "commander": "^2.15.1",
     "content-disposition": "^0.5.2",
-    "express": "^4.16.3"
+    "express": "^4.16.3",
+    "prompt": "^1.0.0",
+    "promptly": "^3.0.3"
   }
 }

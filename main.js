@@ -6,59 +6,79 @@ const querystring = require("querystring");
 var cmd = process.argv[2];
 var hostname = process.argv[3];
 
-if(cmd=="-r")
-{
-     // Console will print the message
- console.log("resolving "+hostname);
- dns.lookup(hostname, function(err, result) {
-   console.log(result)
- })
+if (cmd == "-r") {
+    // Console will print the message
+    console.log("resolving " + hostname);
+    dns.lookup(hostname, function (err, result) {
+        console.log(result)
+    })
 }
-else if(cmd=="-g")
-{
+else if (cmd == "-g") {
     https.get(hostname, res => {
         res.setEncoding("utf8");
         let body = "";
         res.on("data", data => {
-          console.log(data);
-          body += data;
+            console.log(data);
+            body += data;
         });
-      });
+    });
 }
-else if(cmd=="-p")
-{
+else if (cmd == "-p") {
 
+    var prompt = require('promptly');
     var tasklist = {};
-    var postData = JSON.stringify({"tasks": [{"title":"Buy milk","done":false}]});
+    var done = false;
 
-    const options = {
-        hostname: hostname,
-        port: 443,
-        path: '/task_list/',
-        method: 'POST'
-      };
+    async function enter() {
+        tasklist.title = await prompt.prompt('Enter a Title for the taskList: ');
+        tasklist.tasks = [];
+        console.log("Enter some Tasks");
 
-      var stdin = process.openStdin();
+        while (!done) {
+            var task = {};
+            task.title = await prompt.prompt('Enter a Title for the task: ');
+            task.done = false;
+            if (task.title == "done") {
+                done = true;
+            }
+            {
+                tasklist.tasks.push(task);
+            }
 
-      console.log(postData);
-      const req = https.request(options, (res) => {
-        console.log('statusCode:', res.statusCode);
-        console.log('headers:', res.headers);
-      
-        res.on('data', (d) => {
-          process.stdout.write(d);
+        }
+
+        sendData();
+    }
+
+    async function sendData() {
+        var postData = JSON.stringify(tasklist);
+
+        const options = {
+            hostname: hostname,
+            port: 443,
+            path: '/' + process.argv[4] + '/',
+            method: 'POST'
+        };
+
+        const req = https.request(options, (res) => {
+            console.log('statusCode:', res.statusCode);
+            res.on('data', (d) => {
+                var obj = JSON.parse(d); 
+                process.stdout.write("ID of your list: "+ obj.id+"\n");
+            });
         });
-      });
-      
-      req.on('error', (e) => {
-        console.error(e);
-      });
-      req.write(postData);
-      req.end();
-      
+
+        req.on('error', (e) => {
+            console.error(e);
+        });
+        req.write(postData);
+        req.end();
+    }
+
+    enter();
+
 }
-else
-{
+else {
     console.log("usage");
 }
 
